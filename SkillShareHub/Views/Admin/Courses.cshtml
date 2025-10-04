@@ -1,0 +1,56 @@
+﻿@model IEnumerable<SkillShareHub.Models.Course>
+
+@{
+    ViewData["Title"] = "Manage Courses";
+}
+
+<h2>Manage Courses</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Instructor</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Instructor?.FullName</td>
+                <td>@course.Category?.Name</td>
+                <td>
+                    @if (course.Status == SkillShareHub.Models.CourseStatus.Pending)
+                    {
+                        <span class="badge bg-warning">Pending</span>
+                    }
+                    else if (course.Status == SkillShareHub.Models.CourseStatus.Approved)
+                    {
+                        <span class="badge bg-success">Approved</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Rejected</span>
+                    }
+                </td>
+                <td>@course.CreatedAt.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (course.Status == SkillShareHub.Models.CourseStatus.Pending)
+                    {
+                        <form asp-action="Approve" asp-route-id="@course.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                        </form>
+                        <form asp-action="Reject" asp-route-id="@course.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

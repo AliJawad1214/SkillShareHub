@@ -1,0 +1,140 @@
+﻿@model SkillShareHub.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📊 Admin Dashboard</h2>
+
+    <!-- Summary Stats -->
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Total Students</h5>
+                    <h3>@Model.TotalStudents</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Total Instructors</h5>
+                    <h3>@Model.TotalInstructors</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-info shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Total Courses</h5>
+                    <h3>@Model.TotalCourses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-dark shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Total Enrollments</h5>
+                    <h3>@Model.TotalEnrollments</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Status Breakdown -->
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card border-warning shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Pending Courses</h5>
+                    <h3 class="text-warning">@Model.PendingCourses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-success shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Approved Courses</h5>
+                    <h3 class="text-success">@Model.ApprovedCourses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-danger shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Rejected Courses</h5>
+                    <h3 class="text-danger">@Model.RejectedCourses</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructor Stats -->
+    <div class="card mt-4 shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            👩‍🏫 Instructor Stats
+        </div>
+        <div class="card-body">
+            @if (Model.InstructorStats != null && Model.InstructorStats.Any())
+            {
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Instructor</th>
+                            <th>Courses</th>
+                            <th>Students Enrolled</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var instructor in Model.InstructorStats)
+                        {
+                            <tr>
+                                <td>@instructor.InstructorName</td>
+                                <td>@instructor.CourseCount</td>
+                                <td>@instructor.StudentCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No instructor data available.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Top Courses -->
+    <div class="card mt-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            🏆 Top 5 Courses
+        </div>
+        <div class="card-body">
+            @if (Model.TopCourses != null && Model.TopCourses.Any())
+            {
+                <div class="row">
+                    @foreach (var course in Model.TopCourses)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 shadow-sm">
+                                <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title" style="height:180px; object-fit:cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@course.Title</h5>
+                                    <p class="card-text text-muted">Instructor: @course.Instructor?.UserName</p>
+                                    <p class="card-text">
+                                        Enrollments: <strong>@course.Enrollments.Count</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No top courses available.</p>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Register - Choose Role";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Register As</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h3 class="card-title">Student</h3>
+                    <p class="card-text">Join as a student to browse and enroll in courses.</p>
+                    <a asp-area="Identity" asp-page="/Account/Register" asp-route-role="Student" class="btn btn-primary">Register as Student</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h3 class="card-title">Instructor</h3>
+                    <p class="card-text">Join as an instructor to create and manage courses.</p>
+                    <a asp-area="Identity" asp-page="/Account/Register" asp-route-role="Instructor" class="btn btn-success">Register as Instructor</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

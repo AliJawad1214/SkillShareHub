@@ -1,0 +1,44 @@
+﻿@model SkillShareHub.Models.Course
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="card mb-4">
+    <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" style="max-height:400px; object-fit:cover;" />
+
+    <div class="card-body">
+        <h2 class="card-title">@Model.Title</h2>
+        <p class="card-text text-muted">
+            <strong>Category:</strong> @Model.Category?.Name <br />
+            <strong>Instructor:</strong> @Model.Instructor?.UserName <br />
+            <strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd")
+        </p>
+
+        <p class="card-text">@Model.Description</p>
+
+        <h4 class="text-primary">Price: $@Model.Price</h4>
+
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+        {
+            if ((bool)ViewBag.IsEnrolled)
+            {
+                <span class="btn btn-success disabled">Enrolled</span>
+            }
+            else
+            {
+                <form asp-action="Enroll" method="post">
+                    <input type="hidden" name="courseId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success">Enroll Now</button>
+                </form>
+            }
+            
+        }
+        else
+        {
+            <p class="text-muted">Login as Student to enroll.</p>
+        }
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary mt-2">Back to Catalog</a>
+    </div>
+</div>

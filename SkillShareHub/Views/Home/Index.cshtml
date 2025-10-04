@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SkillShareHub.Models.Course>
+@{
+    ViewData["Title"] = "Home - Course Catalog";
+}
+<h2>Featured Courses</h2>
+<div class="row">
+    @foreach (var course in ViewBag.FeaturedCourses as List<SkillShareHub.Models.Course>)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-lg border-0 h-100 position-relative bg-light">
+                @if (!string.IsNullOrEmpty(course.ImageUrl))
+                {
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                    <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title" />
+                    </a>
+                }
+
+                <!-- Featured Ribbon -->
+                <div class="position-absolute top-0 start-0">
+                    <span class="badge bg-warning text-dark m-2 px-3 py-2" style="font-size: 0.9rem;">
+                        ★ Featured
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title text-primary">@course.Title</h5>
+                    <p class="card-text text-muted">@course.Description</p>
+                    <span class="badge bg-primary">@course.Category?.Name</span>
+                    <p class="mt-2"><small>By @course.Instructor?.UserName</small></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+<h2>Explore Courses</h2>
+
+<form method="get" asp-action="Index">
+    <input type="text" name="search" placeholder="Search courses..." value="@Context.Request.Query["search"]" />
+    <select name="categoryId" asp-items="ViewBag.Categories">
+        <option value="">-- All Categories --</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<hr />
+
+<div class="row">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title" />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">@course.Title</h5>
+                    <p class="card-text">@course.Description.Substring(0, Math.Min(100, course.Description.Length))...</p>
+                    <p><strong>Category:</strong> @course.Category?.Name</p>
+                    <p><strong>Price:</strong> $@course.Price</p>
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

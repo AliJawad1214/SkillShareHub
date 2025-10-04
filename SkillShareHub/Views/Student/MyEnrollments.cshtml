@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SkillShareHub.Models.Enrollment>
+
+@{
+    ViewData["Title"] = "My Enrollments";
+}
+
+<h2 class="mb-4">📚 My Enrolled Courses</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You haven’t enrolled in any courses yet.
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm ms-2">Browse Courses</a>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var enrollment in Model)
+        {
+            var course = enrollment.Course;
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@course.ImageUrl" class="card-img-top" alt="@course.Title" style="height:200px; object-fit:cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@course.Title</h5>
+                        <p class="card-text text-muted">By @course.Instructor?.UserName</p>
+                        <p class="card-text"><small class="text-muted">Enrolled on: @enrollment.EnrolledAt.ToString("yyyy-MM-dd")</small></p>
+
+                        <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-outline-primary mt-auto">Go to Course</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
